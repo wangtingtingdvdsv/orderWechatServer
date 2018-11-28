@@ -1,0 +1,160 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+</head>
+<body>
+    
+</body>
+<script>
+   
+//     $.ajax({  //登录  
+//     type: 'get',
+//     url: 'http://localhost:3000/wechat/login',
+//     data: {
+//         code:'023yFYt51IoBCL1OBBr51yh3u51yFYto',
+//         // encryptedData: 's9KfeZWSHxncXJUpQ8cpm3hOXdXRuk5D4iQfIp+vfabAurXNyJ58PXZLdstJYLKt9AAIo0PBwO3HDwntCrveLAyqv9hH6gIXqwGrW0JaPGumH5jKtqvBZexe4LcUvMc3NxukTmCRY/seTzMQo6ETwPUUIjzdw8IEU5VQbGwx9BLO3Pc9uRj0BB2NL2cwN/f2GxEqb54IMhOwefAubMUK3VSE+4TZW+WYCiSsqdlFcJt7wTsCBUkrDcxC25vZ1uQrlvIvJnpGjZkxmUYB87l/LiVWW8fwjpum9SGMA2D7r5ubt0eea0/kQGEsQpYvHicitCkxFAI6t+UCViOgXNxEw77FuQ6ZkYtID/V6ZYkwNce6XIRVcuALRZwR4HE9T8+nUcea554J4Uv4C9YDM+iT0OprJNmHRaUG6LnNcetmCaxK46zrMKGfQ6qPxySWzxGkXytVxoreMb5oixETR4OTMhhDg9lW3oPieP+9ktb05v4=',
+//         // iv:'CCsz9DE77KDG75IY1hfVGw=='
+//         encryptedData: 'vLvtI06lwWKXSNqLyoCGuECv252v4RPWgJPcq/TyBkV9dMdtZKF+sXrVVq7hK3cjm2TwSSUMGhYaF+2sbkyIKEFbZh0Uth/rpdNZJLTfTiXb/X87Ibi5dExkPfEanVpzriYKjWcKh/PE2bQ7kEAxIBU5v6z0eT84SEO8EGZ9TBxcPwkCXq5yznO3KI4ICG5l38g0WTNA6VbMdcAEwEHFBDor0RNZeQbAWEAfi5YohoejTOSLcvH4VUmJTCjXDZaV9yrBdPOcWrzNnYy6JtqLs/b6CqWj7HLkk09OFM5YuRLg2Xd+mchP0RUwhs4hOIIqEjBn1LdBwa3HO/rTWdFvTyQiRKOBwAzVwPV5Ra6DvcbXrmON5N5uUgDxLoUpMsb3ttGFwKESQPc4TYyF8N9gx4+QOzv6OerL+yJnCyF7Wu1mFBAaHwzEpm3bNXrgjs9xwLaW19X4UPxmqqQeKeQEUNXTaPrIPIcLtwvCwiQw+2E51Kp7J0U0eCMJl7xNfSAK',
+//         iv: 'IbzKjyk1BMQQ6llgbG6GAw=='
+
+//     },
+//     success: function(data) {
+//         console.log(data);
+//     }
+// })
+
+//     $.ajax({  //查询 
+//     type: 'get',
+//     url: 'http://localhost:3000/user/info/search',
+//     data: {
+//         openId:'oE3wM5Cv9iT52lJjGFGl6ZRnslWk'
+//       },
+//     success: function(data) {
+//         console.log(data);
+//     }
+// })
+
+//     $.ajax({  //修改
+//     type: 'post',
+//     url: 'http://localhost:3000/user/info/modify',
+//     data: {
+//         openId:'oE3wM5Cv9iT52lJjGFGl6ZRnslWk',
+//         userName:'王悦',
+//         userAddress:'高桥',
+//         userPhone:'111111111',
+//         userGender:'2'
+//       },
+//     success: function(data) {
+//         console.log(data);
+//     }
+// })
+//商品
+$.ajax({  //获取商品列表
+    type: 'get',
+    url: 'https://wangtingting.top:9006/buyer/product/key',
+    data:{
+        key:'笔'
+    },
+    success: function(data) {
+        console.log(data);
+    }
+})
+
+
+
+
+//--------------------------------------------------------------
+//商品
+// $.ajax({  //获取商品列表
+//     type: 'get',
+//     url: 'http://localhost:3000/buyer/product/list',
+//     data:{
+
+//     },
+//     success: function(data) {
+//         console.log(data);
+//     }
+// })
+//-------------------------------------------------
+//评论
+//  $.ajax({  //获取商品评论
+//     type: 'get',
+//     url: 'http://localhost:3000/buyer/commentList',
+
+//     success: function(data) {
+//         console.log(data);
+//     }
+// })
+//-------------------------------------------------
+//订单
+//  $.ajax({  //获取商品订单
+//     type: 'get',
+//     url: 'http://localhost:3000/buyer/searchOrderByopenid',
+//     data: {
+//         openId: '1'
+//     },
+//     success: function(data) {
+//         console.log(data);
+//     }
+// })
+// $.ajax({  //创建订单
+//     type: 'post',
+//     url: 'http://localhost:3000/buyer/createOrder',
+//     data: {
+//         openId: '123',
+//         userName:'asd',
+//         userAddress:'asdas',
+//         userPhone:'123',
+//         deliveryTime:'19970523091528',
+//         items:[{
+//             productId: "1",
+//             productQuantity: 3 
+//         }
+//         ]
+//     },
+//     success: function(data) {
+//         console.log(data);
+//     }
+// })
+
+
+//  $.ajax({  //订单支付
+//     type: 'post',
+//     url: 'http://localhost:3000/buyer/orderPay',
+//     data: {
+//         userOpenid: '1',
+//         orderId:1
+//     },
+//     success: function(data) {
+//         console.log(data);
+//     }
+// })
+
+//     $.ajax({  
+//     type: 'get',
+//     url: 'http://wangtingting.top:3000/q/w',
+//     success: function(data) {
+//         console.log(data);
+//     }
+
+    
+// }) 
+// $.ajax({  
+//     type: 'get',
+//     url: 'https://localhost:3001/q/w',
+//     success: function(data) {
+//         console.log(data);
+//     }
+
+    
+// })
+</script>
+</html>
+
+
