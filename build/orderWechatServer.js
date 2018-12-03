@@ -316,7 +316,7 @@ var path = __webpack_require__(33);
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3006');
+var port = normalizePort(process.env.PORT || '3008');
 // app.set('port', port);
 
 /**
@@ -330,7 +330,7 @@ var server = http.createServer(app.callback());
  */
 
 server.listen(port, function () {
-  console.log('3006端口启动成功');
+  console.log('3008端口启动成功');
 });
 server.on('error', onError);
 server.on('listening', onListening);
