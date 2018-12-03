@@ -80,7 +80,8 @@ module.exports = {
     host: '120.79.192.19',
     user: 'root',
     password: '',
-    database: 'lingYunJunShi'
+    database: 'order_applet',
+    useConnectionPooling: true
 };
 
 /***/ }),
@@ -99,7 +100,7 @@ module.exports = require("koa-router");
 //通过关键字查询商品
 var getProductBykey = function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(key) {
-        var sql, result, i, pics;
+        var sql, result;
         return regeneratorRuntime.wrap(function _callee$(_context) {
             while (1) {
                 switch (_context.prev = _context.next) {
@@ -110,41 +111,9 @@ var getProductBykey = function () {
 
                     case 3:
                         result = _context.sent;
-
-
-                        console.log('**', result);
-
-                        if (!result) {
-                            _context.next = 15;
-                            break;
-                        }
-
-                        i = 0;
-
-                    case 7:
-                        if (!(i < result.length)) {
-                            _context.next = 15;
-                            break;
-                        }
-
-                        _context.next = 10;
-                        return picTable.getProductPic(result[i].product_id);
-
-                    case 10:
-                        pics = _context.sent;
-
-
-                        result[i].pics = pics;
-
-                    case 12:
-                        i++;
-                        _context.next = 7;
-                        break;
-
-                    case 15:
                         return _context.abrupt('return', result);
 
-                    case 16:
+                    case 5:
                     case 'end':
                         return _context.stop();
                 }
@@ -161,53 +130,40 @@ var getProductBykey = function () {
 
 
 var getProductById = function () {
-    var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(categoryId) {
-        var sql, result, i, pics;
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(categoryId, sort) {
+        var sql, result;
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
             while (1) {
                 switch (_context2.prev = _context2.next) {
                     case 0:
+                        sql = void 0;
+
+                        if (sort == 1) {
+                            sql = 'select * from product WHERE category_type =\'' + categoryId + '\' order by product_score desc, product_price ASC';
+                        } else {
+                            sql = 'select * from product WHERE category_type =\'' + categoryId + '\' order by  product_price ASC, product_score desc';
+                        }
+
                         console.log('id', categoryId);
-                        sql = 'select * from product WHERE category_type =\'' + categoryId + '\'';
-                        _context2.next = 4;
+
+                        _context2.next = 5;
                         return query(sql);
 
-                    case 4:
+                    case 5:
                         result = _context2.sent;
 
                         console.log('**', result);
 
-                        if (!(result && result[0])) {
-                            _context2.next = 16;
-                            break;
-                        }
+                        // if(result && result[0]) {
+                        //     for(let i = 0; i < result.length; i++) {
+                        //         let pics = await picTable.getProductPic(result[i].product_id );
 
-                        i = 0;
-
-                    case 8:
-                        if (!(i < result.length)) {
-                            _context2.next = 16;
-                            break;
-                        }
-
-                        _context2.next = 11;
-                        return picTable.getProductPic(result[i].product_id);
-
-                    case 11:
-                        pics = _context2.sent;
-
-
-                        result[i].pics = pics;
-
-                    case 13:
-                        i++;
-                        _context2.next = 8;
-                        break;
-
-                    case 16:
+                        //         result[i].pics = pics;
+                        //     }
+                        // }
                         return _context2.abrupt('return', result);
 
-                    case 17:
+                    case 8:
                     case 'end':
                         return _context2.stop();
                 }
@@ -215,13 +171,13 @@ var getProductById = function () {
         }, _callee2, this);
     }));
 
-    return function getProductById(_x2) {
+    return function getProductById(_x2, _x3) {
         return _ref2.apply(this, arguments);
     };
 }();
 
 var getProductList = function () {
-    var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(categorys) {
+    var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(categorys, sort) {
         var i, products;
         return regeneratorRuntime.wrap(function _callee3$(_context3) {
             while (1) {
@@ -236,7 +192,7 @@ var getProductList = function () {
                         }
 
                         _context3.next = 4;
-                        return getProductById(categorys[i].category_id);
+                        return getProductById(categorys[i].category_id, sort);
 
                     case 4:
                         products = _context3.sent;
@@ -263,7 +219,7 @@ var getProductList = function () {
         }, _callee3, this);
     }));
 
-    return function getProductList(_x3) {
+    return function getProductList(_x4, _x5) {
         return _ref3.apply(this, arguments);
     };
 }();
@@ -297,7 +253,7 @@ var query = function () {
         }, _callee4, this);
     }));
 
-    return function query(_x4) {
+    return function query(_x6) {
         return _ref4.apply(this, arguments);
     };
 }();
@@ -306,7 +262,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 var mysql = __webpack_require__(0);
 var config = __webpack_require__(1);
-var picTable = __webpack_require__(21);
+//const picTable = require('./productPicTable.js');
 var connection = mysql.createConnection(config);
 connection.connect();
 connection.on('error', function (err) {
@@ -352,15 +308,15 @@ module.exports = require("babel-polyfill");
  */
 
 var app = __webpack_require__(7);
-var debug = __webpack_require__(32)('demo:server');
-var http = __webpack_require__(33);
-var path = __webpack_require__(34);
+var debug = __webpack_require__(31)('demo:server');
+var http = __webpack_require__(32);
+var path = __webpack_require__(33);
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '9006');
+var port = normalizePort(process.env.PORT || '3006');
 // app.set('port', port);
 
 /**
@@ -374,7 +330,7 @@ var server = http.createServer(app.callback());
  */
 
 server.listen(port, function () {
-  console.log('9006端口启动成功');
+  console.log('3006端口启动成功');
 });
 server.on('error', onError);
 server.on('listening', onListening);
@@ -458,8 +414,8 @@ var logger = __webpack_require__(13);
 // const category = require('./routes/category')
 var comment = __webpack_require__(14);
 var order = __webpack_require__(17);
-var product = __webpack_require__(22);
-var wechatUser = __webpack_require__(25);
+var product = __webpack_require__(21);
+var wechatUser = __webpack_require__(24);
 
 // error handler
 onerror(app);
@@ -470,7 +426,7 @@ app.use(cors());
 
 app.use(json());
 app.use(logger());
-app.use(__webpack_require__(31)(__dirname + '/public'));
+app.use(__webpack_require__(30)(__dirname + '/public'));
 
 // logger
 app.use(function () {
@@ -569,7 +525,7 @@ var comment = __webpack_require__(15);
 
 router.get('/buyer/searchComment', comment.searchCommentByProductId); //商品评价查询
 router.post('/buyer/createComment', comment.createComment); //商品评价创建
-router.get('/buyer/commentList', comment.getCommentList); //订单评论列表
+router.get('/buyer/commentList', comment.getCommentList); //订单评论查询
 
 
 module.exports = router;
@@ -583,10 +539,29 @@ module.exports = router;
 
 var searchCommentByProductId = function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(ctx, next) {
+        var productId, search;
         return regeneratorRuntime.wrap(function _callee$(_context) {
             while (1) {
                 switch (_context.prev = _context.next) {
                     case 0:
+                        //商品评价查询
+                        productId = ctx.request.query.productId;
+
+                        console.log('productId', productId);
+                        _context.next = 4;
+                        return comment.searchCommentByProductId(productId);
+
+                    case 4:
+                        search = _context.sent;
+
+                        ctx.status = 200;
+                        ctx.body = {
+                            code: 0,
+                            msg: 'success',
+                            data: search
+                        };
+
+                    case 7:
                     case 'end':
                         return _context.stop();
                 }
@@ -601,10 +576,27 @@ var searchCommentByProductId = function () {
 
 var createComment = function () {
     var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(ctx, next) {
+        var commentInfo;
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
             while (1) {
                 switch (_context2.prev = _context2.next) {
                     case 0:
+                        //商品评价创建
+                        commentInfo = ctx.request.body.commentInfo;
+                        //  console.log("commentInfo", commentInfo);
+
+                        _context2.next = 3;
+                        return comment.createComment(commentInfo);
+
+                    case 3:
+                        ctx.status = 200;
+                        ctx.body = {
+                            code: 0,
+                            msg: 'success',
+                            data: null
+                        };
+
+                    case 5:
                     case 'end':
                         return _context2.stop();
                 }
@@ -619,18 +611,22 @@ var createComment = function () {
 
 var getCommentList = function () {
     var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(ctx, next) {
-        var search;
+        var orderId, search;
         return regeneratorRuntime.wrap(function _callee3$(_context3) {
             while (1) {
                 switch (_context3.prev = _context3.next) {
                     case 0:
-                        _context3.next = 2;
-                        return comment.getCommentList();
+                        //订单评论查询
+                        orderId = ctx.request.query.orderId;
 
-                    case 2:
+                        console.log('orderId', orderId);
+                        _context3.next = 4;
+                        return comment.getCommentList(orderId);
+
+                    case 4:
                         search = _context3.sent;
 
-                        console.log('商品评论', search);
+                        //console.log('商品评论', search);
                         ctx.status = 200;
                         ctx.body = {
                             code: 0,
@@ -638,7 +634,7 @@ var getCommentList = function () {
                             data: search
                         };
 
-                    case 6:
+                    case 7:
                     case 'end':
                         return _context3.stop();
                 }
@@ -669,13 +665,13 @@ module.exports = {
 
 
 var getCommentList = function () {
-    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(orderId) {
         var sql, result;
         return regeneratorRuntime.wrap(function _callee$(_context) {
             while (1) {
                 switch (_context.prev = _context.next) {
                     case 0:
-                        sql = 'select * from comment';
+                        sql = 'select * from comment_table where order_id=\'' + orderId + '\'';
                         _context.next = 3;
                         return query(sql);
 
@@ -691,18 +687,89 @@ var getCommentList = function () {
         }, _callee, this);
     }));
 
-    return function getCommentList() {
+    return function getCommentList(_x) {
         return _ref.apply(this, arguments);
     };
 }();
 
-var query = function () {
-    var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(sql) {
+var searchCommentByProductId = function () {
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(productId) {
+        var sql, result;
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
             while (1) {
                 switch (_context2.prev = _context2.next) {
                     case 0:
-                        _context2.next = 2;
+                        sql = 'select * from comment_table where product_id=\'' + productId + '\'';
+                        _context2.next = 3;
+                        return query(sql);
+
+                    case 3:
+                        result = _context2.sent;
+                        return _context2.abrupt('return', result);
+
+                    case 5:
+                    case 'end':
+                        return _context2.stop();
+                }
+            }
+        }, _callee2, this);
+    }));
+
+    return function searchCommentByProductId(_x2) {
+        return _ref2.apply(this, arguments);
+    };
+}();
+
+var createComment = function () {
+    var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(commentInfo) {
+        return regeneratorRuntime.wrap(function _callee4$(_context4) {
+            while (1) {
+                switch (_context4.prev = _context4.next) {
+                    case 0:
+                        commentInfo.forEach(function () {
+                            var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(comment) {
+                                var sql;
+                                return regeneratorRuntime.wrap(function _callee3$(_context3) {
+                                    while (1) {
+                                        switch (_context3.prev = _context3.next) {
+                                            case 0:
+                                                sql = 'insert into comment_table(quality_score, taste_score, packing_score ,product_id ,user_openid , order_id) \n        values (\'' + comment.qualityScore + '\', \'' + comment.tasteScore + '\', \'' + comment.packingScore + '\'\n        ,\'' + comment.productId + '\', \'' + comment.userOpenid + '\', \'' + comment.orderId + '\')';
+                                                _context3.next = 3;
+                                                return query(sql);
+
+                                            case 3:
+                                            case 'end':
+                                                return _context3.stop();
+                                        }
+                                    }
+                                }, _callee3, this);
+                            }));
+
+                            return function (_x4) {
+                                return _ref4.apply(this, arguments);
+                            };
+                        }());
+
+                    case 1:
+                    case 'end':
+                        return _context4.stop();
+                }
+            }
+        }, _callee4, this);
+    }));
+
+    return function createComment(_x3) {
+        return _ref3.apply(this, arguments);
+    };
+}();
+
+var query = function () {
+    var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(sql) {
+        return regeneratorRuntime.wrap(function _callee5$(_context5) {
+            while (1) {
+                switch (_context5.prev = _context5.next) {
+                    case 0:
+                        _context5.next = 2;
                         return new Promise(function (resolve, reject) {
                             connection.query(sql, function (err, result) {
                                 if (err) {
@@ -715,18 +782,18 @@ var query = function () {
                         });
 
                     case 2:
-                        return _context2.abrupt('return', _context2.sent);
+                        return _context5.abrupt('return', _context5.sent);
 
                     case 3:
                     case 'end':
-                        return _context2.stop();
+                        return _context5.stop();
                 }
             }
-        }, _callee2, this);
+        }, _callee5, this);
     }));
 
-    return function query(_x) {
-        return _ref2.apply(this, arguments);
+    return function query(_x5) {
+        return _ref5.apply(this, arguments);
     };
 }();
 
@@ -748,7 +815,9 @@ connection.on('error', function (err) {
 });
 
 module.exports = {
-    getCommentList: getCommentList
+    getCommentList: getCommentList,
+    createComment: createComment,
+    searchCommentByProductId: searchCommentByProductId
 };
 
 /***/ }),
@@ -1220,100 +1289,10 @@ module.exports = {
 "use strict";
 
 
-var getProductPic = function () {
-    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(productId) {
-        var sql, result;
-        return regeneratorRuntime.wrap(function _callee$(_context) {
-            while (1) {
-                switch (_context.prev = _context.next) {
-                    case 0:
-                        sql = 'select * from product_pic where productId = ' + productId;
-                        _context.next = 3;
-                        return query(sql);
-
-                    case 3:
-                        result = _context.sent;
-                        return _context.abrupt('return', result);
-
-                    case 5:
-                    case 'end':
-                        return _context.stop();
-                }
-            }
-        }, _callee, this);
-    }));
-
-    return function getProductPic(_x) {
-        return _ref.apply(this, arguments);
-    };
-}();
-
-var query = function () {
-    var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(sql) {
-        return regeneratorRuntime.wrap(function _callee2$(_context2) {
-            while (1) {
-                switch (_context2.prev = _context2.next) {
-                    case 0:
-                        _context2.next = 2;
-                        return new Promise(function (resolve, reject) {
-                            connection.query(sql, function (err, result) {
-                                if (err) {
-                                    reject(err);
-                                } else {
-                                    resolve(result);
-                                    //console.log("r", result);
-                                }
-                            });
-                        });
-
-                    case 2:
-                        return _context2.abrupt('return', _context2.sent);
-
-                    case 3:
-                    case 'end':
-                        return _context2.stop();
-                }
-            }
-        }, _callee2, this);
-    }));
-
-    return function query(_x2) {
-        return _ref2.apply(this, arguments);
-    };
-}();
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-var mysql = __webpack_require__(0);
-var config = __webpack_require__(1);
-var connection = mysql.createConnection(config);
-connection.connect();
-connection.on('error', function (err) {
-    if (err) {
-        // 如果是连接断开，自动重新连接
-        if (err.code === 'PROTOCOL_CONNECTION_LOST') {
-            connect();
-        } else {
-            console.error(err.stack || err);
-        }
-    }
-});
-
-module.exports = {
-    getProductPic: getProductPic
-};
-
-/***/ }),
-/* 22 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
 var Router = __webpack_require__(2);
 var router = new Router();
 
-var product = __webpack_require__(23);
+var product = __webpack_require__(22);
 
 router.get('/buyer/product/list', product.getProductList); //商品列表查询
 router.get('/buyer/product/key', product.productSearchByKey); //商品搜索查询
@@ -1322,7 +1301,7 @@ router.get('/buyer/product/key', product.productSearchByKey); //商品搜索查�
 module.exports = router;
 
 /***/ }),
-/* 23 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1331,7 +1310,7 @@ module.exports = router;
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 var product = __webpack_require__(3);
-var categoryTable = __webpack_require__(24);
+var categoryTable = __webpack_require__(23);
 
 var getProductList = function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(ctx, next) {
@@ -1341,16 +1320,23 @@ var getProductList = function () {
                 switch (_context.prev = _context.next) {
                     case 0:
                         //商品列表查询
-                        sort = ctx.request.query.sort;
-                        _context.next = 3;
+                        sort = 1;
+
+                        if (ctx.request.query.sort) {
+                            sort = ctx.request.query.sort;
+                        }
+
+                        _context.next = 4;
                         return categoryTable.getAllCategory();
 
-                    case 3:
+                    case 4:
                         category = _context.sent;
-                        _context.next = 6;
-                        return product.getProductList(category);
 
-                    case 6:
+                        console.log("$");
+                        _context.next = 8;
+                        return product.getProductList(category, sort);
+
+                    case 8:
                         search = _context.sent;
 
                         console.log('商品列表', search);
@@ -1365,7 +1351,7 @@ var getProductList = function () {
                             data: products
                         };
 
-                    case 11:
+                    case 13:
                     case 'end':
                         return _context.stop();
                 }
@@ -1432,7 +1418,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 24 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1522,7 +1508,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1531,26 +1517,17 @@ module.exports = {
 var Router = __webpack_require__(2);
 var router = new Router();
 
-var wechatUser = __webpack_require__(26);
+var wechatUser = __webpack_require__(25);
 
 router.get('/wechat/login', wechatUser.login); //登录
 router.get('/user/info/search', wechatUser.searchUserInfo); //查询
-router.post('/user/info/modify', wechatUser.modifyUserInfo); //修改
+router.post('/user/info/modify', wechatUser.modifyUserInfo); //更新
 
-router.get('/q/w', function (ctx, next) {
-    console.log('1111111111111');
-    ctx.status = 200;
-    ctx.body = {
-        code: 0,
-        msg: 'success',
-        data: 'hhhhhhhhhhh'
-    };
-});
 
 module.exports = router;
 
 /***/ }),
-/* 26 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1590,12 +1567,12 @@ var getOpenIdAndSessionKey = function () {
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
-var axios = __webpack_require__(27);
+var axios = __webpack_require__(26);
 
-var _require = __webpack_require__(28),
+var _require = __webpack_require__(27),
     WXBizDataCrypt = _require.WXBizDataCrypt;
 
-var userTbale = __webpack_require__(30);
+var userTbale = __webpack_require__(29);
 
 var appId = 'wx33fdb2328d611917';
 var secret = '6c2ab9894fd10a107642e37b62b13b28';
@@ -1760,19 +1737,19 @@ iv:'IbzKjyk1BMQQ6llgbG6GAw=='
 */
 
 /***/ }),
-/* 27 */
+/* 26 */
 /***/ (function(module, exports) {
 
 module.exports = require("axios");
 
 /***/ }),
-/* 28 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var crypto = __webpack_require__(29);
+var crypto = __webpack_require__(28);
 
 function WXBizDataCrypt(appId, sessionKey) {
   this.appId = appId;
@@ -1817,13 +1794,13 @@ module.exports = {
 };
 
 /***/ }),
-/* 29 */
+/* 28 */
 /***/ (function(module, exports) {
 
 module.exports = require("crypto");
 
 /***/ }),
-/* 30 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2023,25 +2000,25 @@ module.exports = {
 };
 
 /***/ }),
-/* 31 */
+/* 30 */
 /***/ (function(module, exports) {
 
 module.exports = require("koa-static");
 
 /***/ }),
-/* 32 */
+/* 31 */
 /***/ (function(module, exports) {
 
 module.exports = require("debug");
 
 /***/ }),
-/* 33 */
+/* 32 */
 /***/ (function(module, exports) {
 
 module.exports = require("http");
 
 /***/ }),
-/* 34 */
+/* 33 */
 /***/ (function(module, exports) {
 
 module.exports = require("path");

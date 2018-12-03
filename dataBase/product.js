@@ -1,6 +1,6 @@
 const mysql = require('mysql');
 const config = require('../config');
-const picTable = require('./productPicTable.js');
+//const picTable = require('./productPicTable.js');
 var connection = mysql.createConnection(config);
 connection.connect();
 connection.on('error', 
@@ -20,39 +20,46 @@ async function getProductBykey(key) {
     let sql = `select * from product where product_name like '%${key}%'`;
     let result = await query(sql);
   
-    console.log('**', result);
+    // console.log('**', result);
 
-    if(result) {
-        for(let i = 0; i < result.length; i++) {
-            let pics = await picTable.getProductPic(result[i].product_id );
+    // if(result) {
+    //     for(let i = 0; i < result.length; i++) {
+    //         let pics = await picTable.getProductPic(result[i].product_id );
             
-            result[i].pics = pics;
-        }
-    }
+    //         result[i].pics = pics;
+    //     }
+    // }
     return result;
 }
 
 //通过categoryId获取商品信息
-async function getProductById(categoryId) {
+async function getProductById(categoryId, sort) {
+    let sql;
+    if(sort == 1) {
+        sql = `select * from product WHERE category_type ='${categoryId}' order by product_score desc, product_price ASC`;  
+    } else {
+        sql = `select * from product WHERE category_type ='${categoryId}' order by  product_price ASC, product_score desc`;  
+    }
+   
     console.log('id', categoryId);
-    let sql = `select * from product WHERE category_type ='${categoryId}'`;   
+    
     let result = await query(sql);
     console.log('**', result);
 
-    if(result && result[0]) {
-        for(let i = 0; i < result.length; i++) {
-            let pics = await picTable.getProductPic(result[i].product_id );
+    // if(result && result[0]) {
+    //     for(let i = 0; i < result.length; i++) {
+    //         let pics = await picTable.getProductPic(result[i].product_id );
             
-            result[i].pics = pics;
-        }
-    }
+    //         result[i].pics = pics;
+    //     }
+    // }
     return result;
 }
 
-async function getProductList(categorys) { //获取商品列表
+async function getProductList(categorys, sort) { //获取商品列表
 
     for(let i = 0; i < categorys.length; i++) {
-        let products = await getProductById(categorys[i].category_id);
+        let products = await getProductById(categorys[i].category_id, sort);
         if(products) {
             categorys[i].products = products;
             console.log('products', products);

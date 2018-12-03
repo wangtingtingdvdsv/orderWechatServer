@@ -12,6 +12,44 @@
     
 </body>
 <script>
+    //评论
+    
+//     $.ajax({  //评论创建
+//     type: 'post',
+//     url: 'http://localhost:3006/buyer/createComment',
+//     data: {commentInfo:[{
+//         orderId:1,
+//         userOpenid:'oE3wM5I60PBz2cEfeWqumbS1gHkU',
+//         productId:2,
+//         qualityScore:'3',
+//         tasteScore:"4",
+//         packingScore:'4' 
+//     },{
+//         orderId:1,
+//         userOpenid:'oE3wM5I60PBz2cEfeWqumbS1gHkU',
+//         productId:2,
+//         qualityScore:'3',
+//         tasteScore:"4",
+//         packingScore:'4' 
+
+//     }]},
+//     success: function(data) {
+//         console.log(data);
+//     }
+// })
+
+//订单评论查询
+   
+    $.ajax({
+    type: 'get',
+    url: 'http://localhost:3006/buyer/product/list',
+    data: {
+        
+    },
+    success: function(data) {
+        console.log(data);
+    }
+})
    
 //     $.ajax({  //登录  
 //     type: 'get',
@@ -55,16 +93,16 @@
 //     }
 // })
 //商品
-$.ajax({  //获取商品列表
-    type: 'get',
-    url: 'https://wangtingting.top:9006/buyer/product/key',
-    data:{
-        key:'笔'
-    },
-    success: function(data) {
-        console.log(data);
-    }
-})
+// $.ajax({  //获取商品列表
+//     type: 'get',
+//     url: 'https://wangtingting.top:9006/buyer/product/key',
+//     data:{
+//         key:'笔'
+//     },
+//     success: function(data) {
+//         console.log(data);
+//     }
+// })
 
 
 
