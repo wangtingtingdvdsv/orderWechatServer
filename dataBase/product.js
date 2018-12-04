@@ -31,6 +31,14 @@ async function getProductBykey(key) {
     // }
     return result;
 }
+//通过productId获取商品信息
+async function getProductByproductId(productId) {
+   
+    let sql =  `select * from product WHERE product_id ='${productId}'`;   
+    let result = await query(sql);
+    return result[0];
+}
+
 
 //通过categoryId获取商品信息
 async function getProductById(categoryId, sort) {
@@ -41,10 +49,10 @@ async function getProductById(categoryId, sort) {
         sql = `select * from product WHERE category_type ='${categoryId}' order by  product_price ASC, product_score desc`;  
     }
    
-    console.log('id', categoryId);
+ 
     
     let result = await query(sql);
-    console.log('**', result);
+
 
     // if(result && result[0]) {
     //     for(let i = 0; i < result.length; i++) {
@@ -67,7 +75,7 @@ async function getProductList(categorys, sort) { //获取商品列表
         
        
     }
-    console.log('categorys', categorys);
+  
     return categorys;
 }
 
@@ -87,5 +95,6 @@ async function query(sql) {
 module.exports = {
     getProductList,
     getProductById,
-    getProductBykey
+    getProductBykey,
+    getProductByproductId
 };

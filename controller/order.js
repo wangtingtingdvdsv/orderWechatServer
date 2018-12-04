@@ -5,11 +5,16 @@ async function searchOrderByopenid(ctx, next) {
     if(!openId) {
         return;
     }
-    let search = await orderSummary.searchOrderByopenid(openId);
-    console.log('订单列表', search);
-    let details = await orderDetails.getOrderDetails(search.order_id);
-    console.log('^details^', details)
-    search.orderDetailList = details;
+    var search = await orderSummary.searchOrderByopenid(openId);
+   console.log("+++++++++++-----------", search);
+    for(let i = 0; i < search.length; i++) {
+        let details = await orderDetails.getOrderDetails(search[i].order_id);
+        search[i].orderDetailList = details;
+    }
+    
+
+    
+    console.log("+++++++++++-----------", search);
     ctx.status = 200;
     ctx.body = {
         code: 0,
@@ -20,6 +25,7 @@ async function searchOrderByopenid(ctx, next) {
 
 async function createOrder(ctx, next) { //订单创建
     let data = ctx.request.body;
+    console.log("--------------------------data", data);
     if(!(data.userName || data.userAddress || data.userPhone || data.userOpenid || data.deliveryTime || data.items)) {
         return;
     }
@@ -28,6 +34,7 @@ async function createOrder(ctx, next) { //订单创建
     console.log('#result#', items);
     items.forEach(function(item) {
         orderDetails.insertOrderDetail(item.productId, item.productQuantity, result.insertId);
+
     })
     
     ctx.status = 200;

@@ -19,7 +19,7 @@ const secret = '506f274b47d9ae377446bf29ea31d39e';
 
 var modifyUserInfo = async function(ctx, next) {//信息修改接口
     let data = ctx.request.body;
-    console.log('data', data)
+   // console.log('data', data)
     userTbale.modifyUserInfo(data)
     ctx.status = 200;
     ctx.body = {
@@ -49,7 +49,7 @@ var login = async function (ctx, next) {  //登录接口
     let openid = data.data.openid;
     let session_key = data.data.session_key;
 
-    console.log('session_key', session_key);
+   // console.log('session_key', session_key);
 
     let pc = new WXBizDataCrypt(appId, session_key)
 

@@ -55,7 +55,7 @@ async function insertUser(data) {
 
 async function modifyUserInfo(data){
     console.log("data", data);
-    sql = `UPDATE usertable SET user_address='${data.userAddress}', user_name='${data.userName}',  user_gender='${data.userGender}', user_phone='${data.userPhone}' WHERE user_openid ='${data.openId}'`;
+    let sql = `UPDATE usertable SET user_address='${data.userAddress}', user_name='${data.userName}',  user_gender='${data.userGender}', user_phone='${data.userPhone}' WHERE user_openid ='${data.openId}'`;
     console.log("sql%", sql);
     let result = await query(sql);
     return result;

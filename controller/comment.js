@@ -2,7 +2,7 @@ const comment = require('../dataBase/comment.js');
 
 async function searchCommentByProductId(ctx, next) { //商品评价查询
     let productId = ctx.request.query.productId;
-    console.log('productId', productId);
+   // console.log('productId', productId);
     let search = await comment.searchCommentByProductId(productId);
     ctx.status = 200;
     ctx.body = {

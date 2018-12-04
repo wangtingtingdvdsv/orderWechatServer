@@ -8,9 +8,9 @@ var getProductList = async function(ctx, next) { //商品列表查询
     }
      
     let category = await categoryTable.getAllCategory();
-    console.log("$");
+    //console.log("$");
     let search = await product.getProductList(category, sort);
-    console.log('商品列表', search);
+  //  console.log('商品列表', search);
     let products = search.filter(function(categoryProducts) {
         return categoryProducts.products;
     })
@@ -23,9 +23,9 @@ var getProductList = async function(ctx, next) { //商品列表查询
 }
 
 var productSearchByKey = async function(ctx, next) { //商品搜索查询
-    console.log('query', ctx.request.query);
+ //   console.log('query', ctx.request.query);
     let key = ctx.request.query.key;
-    console.log('key', key);
+   // console.log('key', key);
     if(key == '') {
         return;
     }
