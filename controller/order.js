@@ -34,7 +34,7 @@ async function createOrder(ctx, next) { //订单创建
     ctx.body = {
         code: 0,
         msg: 'success',
-        data: null
+        data: result.insertId
     }
     
 }

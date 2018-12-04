@@ -2,8 +2,8 @@ const axios = require('axios');
 const {WXBizDataCrypt} = require('../utils.js');
 const userTbale = require('../dataBase/userTable.js');
 
-const appId = 'wx33fdb2328d611917';
-const secret = '6c2ab9894fd10a107642e37b62b13b28'; 
+const appId = 'wx928bccfbb4ff4fda';
+const secret = '506f274b47d9ae377446bf29ea31d39e'; 
 // const data = { 
 //     openId: 'oE3wM5Cv9iT52lJjGFGl6ZRnslWk',
 //     nickName: '不畏将来，不念过往',
@@ -49,13 +49,13 @@ var login = async function (ctx, next) {  //登录接口
     let openid = data.data.openid;
     let session_key = data.data.session_key;
 
-
+    console.log('session_key', session_key);
 
     let pc = new WXBizDataCrypt(appId, session_key)
 
     let info = pc.decryptData(encryptedData , iv)
 
-
+    
     var result = await userTbale.insertUser(info)
 
 
