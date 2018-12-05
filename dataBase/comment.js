@@ -1,6 +1,8 @@
 const mysql = require('mysql');
 const config = require('../config');
 var connection = mysql.createConnection(config);
+const commentTable = require('./product.js');
+
 connection.connect();
 connection.on('error', 
 function (err) {
@@ -18,6 +20,12 @@ async function getCommentList(orderId) {
 
     let sql = `select * from comment_table where order_id='${orderId}'`;
     let result = await query(sql);
+
+    for(let i = 0; i < result.length; i++) {
+        let productName= await commentTable.getProductNameByproductId(result[i].product_id);//获取productId对应的名字
+        result[i].product_name = productName;
+    }
+    
     return result;
 }
 
@@ -28,12 +36,13 @@ async function searchCommentByProductId(productId) {
 }
 
 async function createComment(commentInfo) {
+   // console.log("#####", commentInfo);
     commentInfo.forEach(async function(comment) {
         let sql = `insert into comment_table(quality_score, taste_score, packing_score ,product_id ,user_openid , order_id) 
         values ('${comment.qualityScore}', '${comment.tasteScore}', '${comment.packingScore}'
         ,'${comment.productId}', '${comment.userOpenid}', '${comment.orderId}')`;
-
-        await query(sql);
+        //console.log('&&&&&&&&&&sql', sql);
+        await  query(sql);
      
     })
 }

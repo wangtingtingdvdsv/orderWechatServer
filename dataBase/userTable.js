@@ -62,8 +62,10 @@ async function modifyUserInfo(data){
 }
 
 async function searchUser(openId){
+    console.log("=============", openId);
     var  sql = `SELECT * from usertable WHERE user_openid='${openId}'`;
     let result = await query(sql);
+    console.log("====================", result);
     return result;
 }
 

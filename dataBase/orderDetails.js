@@ -27,7 +27,7 @@ async function insertOrderDetail(productId, productQuantity, orderId) { //插入
 async function getOrderDetails(orderId) { //获取订单详情
     let sql = `select * from orderDetails WHERE order_id ='${orderId}'`;
     let result = await query(sql);
-    console.log("++++=========", result, orderId);
+    //console.log("++++=========", result, orderId);
     return result;
 } 
 

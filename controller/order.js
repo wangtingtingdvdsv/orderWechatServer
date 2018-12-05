@@ -6,7 +6,7 @@ async function searchOrderByopenid(ctx, next) {
         return;
     }
     var search = await orderSummary.searchOrderByopenid(openId);
-   console.log("+++++++++++-----------", search);
+  // console.log("+++++++++++-----------", search);
     for(let i = 0; i < search.length; i++) {
         let details = await orderDetails.getOrderDetails(search[i].order_id);
         search[i].orderDetailList = details;
@@ -14,7 +14,7 @@ async function searchOrderByopenid(ctx, next) {
     
 
     
-    console.log("+++++++++++-----------", search);
+    //console.log("+++++++++++-----------", search);
     ctx.status = 200;
     ctx.body = {
         code: 0,

@@ -34,6 +34,12 @@ async function orderPay(userOpenid, orderId){//订单支付
     let result = await query(sql);
     return result;
 }
+async function changeOrderStatus(orderId, userOpenid) { //将订单状态改为已评论
+    let sql = `UPDATE orderSummary SET  comment_status='1' WHERE  order_id ='${orderId}' AND user_openid='${userOpenid}'`;
+    console.log("##￥￥%%", sql);
+    let result = await query(sql);
+    return result;
+}
 async function query(sql) {
     return await new Promise((resolve, reject) => {
         connection.query(sql, ( err, result) => {
@@ -50,5 +56,6 @@ async function query(sql) {
 module.exports = {
     searchOrderByopenid,
     createOrder,
-    orderPay
+    orderPay,
+    changeOrderStatus
 };

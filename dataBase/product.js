@@ -64,6 +64,12 @@ async function getProductById(categoryId, sort) {
     return result;
 }
 
+async function getProductNameByproductId(productId) { 
+    let sql =  `select * from product WHERE product_id='${productId}'`; 
+    let result = await query(sql);
+    return result[0].product_name;
+}
+
 async function getProductList(categorys, sort) { //获取商品列表
 
     for(let i = 0; i < categorys.length; i++) {
@@ -96,5 +102,6 @@ module.exports = {
     getProductList,
     getProductById,
     getProductBykey,
-    getProductByproductId
+    getProductByproductId,
+    getProductNameByproductId
 };
