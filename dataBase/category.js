@@ -10,7 +10,7 @@ async function getAllCategory() {
 
 async function query(sql) {
     return await new Promise((resolve, reject) => {
-        connection.connect();
+       
         connection.query(sql, ( err, result) => {
             if ( err ) {
                 console.log( err )
@@ -19,7 +19,7 @@ async function query(sql) {
                //console.log("r", result);
             }
         }) 
-        connection.end(); 
+       
     })
 } 
 module.exports = {

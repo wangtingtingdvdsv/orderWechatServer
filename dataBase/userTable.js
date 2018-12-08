@@ -31,16 +31,16 @@ async function searchUser(openId){
 
 async function query(sql) {
     return await new Promise((resolve, reject) => {
-        connection.connect();
+       
         connection.query(sql, ( err, result) => {
             if ( err ) {
-                console.log( err )
+                console.log("mysql",  err )
             } else {
                resolve(result);
                //console.log("r", result);
             }
         })  
-        connection.end() 
+        
     })
 } 
 
