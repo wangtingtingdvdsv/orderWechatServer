@@ -2,6 +2,10 @@ const mysql = require('mysql');
 const config = require('../config');
 var connection = mysql.createConnection(config);
 
+setInterval(function () {
+    connection.query('SELECT 1');
+}, 5000);
+
 async function insertUser(data) {
     let dataInfo = await searchUser(data.openId);
     if(dataInfo.length != 0) {

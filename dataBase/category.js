@@ -13,7 +13,7 @@ async function query(sql) {
        
         connection.query(sql, ( err, result) => {
             if ( err ) {
-                console.log( err )
+                console.log("mysql",  err )
             } else {
                resolve(result);
                //console.log("r", result);
