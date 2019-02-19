@@ -14,7 +14,7 @@ fs.readdirSync('node_modules')
 
 module.exports = {
 
-  entry: ['babel-polyfill', './bin/orderWechatServer.js'],
+  entry: ['babel-polyfill', './orderWechatServer.js'],
   target: 'node',
   output: {
     path: path.join(__dirname, 'build'),
